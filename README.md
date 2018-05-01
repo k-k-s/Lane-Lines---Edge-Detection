@@ -3,54 +3,29 @@
 
 <img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
 
-Overview
+Objective
 ---
-
-When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
-
-In this project you will detect lane lines in images using Python and OpenCV.  OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
-
-To complete the project, two files will be submitted: a file containing project code and a file containing a brief write up explaining your solution. We have included template files to be used both for the [code](https://github.com/udacity/CarND-LaneLines-P1/blob/master/P1.ipynb) and the [writeup](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md).The code file is called P1.ipynb and the writeup template is writeup_template.md 
-
-To meet specifications in the project, take a look at the requirements in the [project rubric](https://review.udacity.com/#!/rubrics/322/view)
-
-
-Creating a Great Writeup
----
-For this project, a great writeup should provide a detailed response to the "Reflection" section of the [project rubric](https://review.udacity.com/#!/rubrics/322/view). There are three parts to the reflection:
-
-1. Describe the pipeline
-
-2. Identify any shortcomings
-
-3. Suggest possible improvements
-
-We encourage using images in your writeup to demonstrate how your pipeline works.  
-
-All that said, please be concise!  We're not looking for you to write a book here: just a brief description.
-
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup. Here is a link to a [writeup template file](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md). 
-
+To identify lane lines using canny edge detection and hough transform.
 
 The Project
 ---
+Steps
+Step 1: Convert RGB image to grayscale.Step 2: Apply Gaussian blur to reduce noise.Step 3: Apply Edge detection using canny method in opencv.Step 4: Select the region of interest making it easier to detect lines. 
+Step 5: Detect lines using Hough transform.Step 6 : Draw the lines by modifying the draw_lines method.Step 7: Interlay the drawn lines over the original image.
 
-## If you have already installed the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) you should be good to go!   If not, you should install the starter kit to get started on this project. ##
+Modification of ?draw_lines? method:
 
-**Step 1:** Set up the [CarND Term1 Starter Kit](https://classroom.udacity.com/nanodegrees/nd013/parts/fbf77062-5703-404e-b60c-95b78b2f3f9e/modules/83ec35ee-1e02-48a5-bdb7-d244bd47c2dc/lessons/8c82408b-a217-4d09-b81d-1bda4c6380ef/concepts/4f1870e0-3849-43e4-b670-12e6f2d4b7a7) if you haven't already.
+The default version plots the lines detected using Hough transform. The method is modified so as to extrapolate to a single line representing the boundary of a lane.By identifying that the left boundary lines have positive slope, and right boundary lines have negative slope, we can separate the lines identified after the Hough transform.I used a threshold of slope values for left and right boundaries. (Between 0.2 and 0.8) for left and (-0.2 and -0.8) for right. This works for all of the test images.I calculate the centre of x values and y values along with the slope and separate them into left and right lane boundaries based on slope values.I calculate the average of the centers in x and y directions, and the average slope. This is used to extrapolate the lane lines.Finally, I choose the y limits for the lane lines and then calculate the x intercepts based on the slope equation.After obtaining the intercepts, we have the vertices required to draw the lane lines.
 
-**Step 2:** Open the code in a Jupyter Notebook
+Shortcomings:
+---
+The current set of parameters for Hough Transform and extrapolation method fails in the challenge video. The problem is ?draw_lines? method encounters divide by zero errors when calculating the average slope values since it does not recognize any right lanes based on the thresholds. This means either the Hough transform does not recognize the right lane boundaries or the thresholds do not accept any right lanes. Further inspection is needed.
 
-You will complete the project code in a Jupyter notebook.  If you are unfamiliar with Jupyter Notebooks, check out <A HREF="https://www.packtpub.com/books/content/basics-jupyter-notebook-and-python" target="_blank">Cyrille Rossant's Basics of Jupyter Notebook and Python</A> to get started.
+There might be fundamental problems due to the average values of slope taken to draw a single line. A solution can be to apply linear regression to the points separated by the slope thresholds.
 
-Jupyter is an Ipython notebook where you can run blocks of code and see results interactively.  All the code for this project is contained in a Jupyter notebook. To start Jupyter in your browser, use terminal to navigate to your project directory and then run the following command at the terminal prompt (be sure you've activated your Python 3 carnd-term1 environment as described in the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) installation instructions!):
+Improvements Suggested
+---
+1) Increase value of min_line length and max_line_gap (Hough Transform parameters)
+2) Perform weighted average of lane lines detected in previous 10 frames to reduce jitteriness of lines drawn.
 
-`> jupyter notebook`
-
-A browser window will appear showing the contents of the current directory.  Click on the file called "P1.ipynb".  Another browser window will appear displaying the notebook.  Follow the instructions in the notebook to complete the project.  
-
-**Step 3:** Complete the project and submit both the Ipython notebook and the project writeup
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
