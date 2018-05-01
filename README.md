@@ -30,7 +30,7 @@ After obtaining the intercepts, we have the vertices required to draw the lane l
 
 Shortcomings:
 ---
-The current set of parameters for Hough Transform and extrapolation method fails in the challenge video. The problem is ?draw_lines? method encounters divide by zero errors when calculating the average slope values since it does not recognize any right lanes based on the thresholds. This means either the Hough transform does not recognize the right lane boundaries or the thresholds do not accept any right lanes. Further inspection is needed.
+The current set of parameters for Hough Transform and extrapolation method fails in the challenge video. The problem is that the draw_lines method encounters divide by zero errors when calculating the average slope values since it does not recognize any right lanes based on the thresholds. This means either the Hough transform does not recognize the right lane boundaries or the thresholds do not accept any right lanes. Further inspection is needed.
 
 There might be fundamental problems due to the average values of slope taken to draw a single line. A solution can be to apply linear regression to the points separated by the slope thresholds.
 
