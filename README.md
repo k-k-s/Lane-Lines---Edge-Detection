@@ -1,4 +1,4 @@
-# **Finding Lane Lines on the Road** 
+# **Finding Lane Lines on the Road**
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
 <img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
@@ -10,11 +10,17 @@ To identify lane lines using canny edge detection and hough transform.
 The Project
 ---
 Step 1: Convert RGB image to grayscale.
+
 Step 2: Apply Gaussian blur to reduce noise.
+
 Step 3: Apply Edge detection using canny method in opencv.
-Step 4: Select the region of interest making it easier to detect lines. 
+
+Step 4: Select the region of interest making it easier to detect lines.
+
 Step 5: Detect lines using Hough transform.
+
 Step 6 : Draw the lines by modifying the draw_lines method.
+
 Step 7: Interlay the drawn lines over the original image.
 
 
@@ -38,5 +44,3 @@ Improvements Suggested
 ---
 1) Increase value of min_line length and max_line_gap (Hough Transform parameters)
 2) Perform weighted average of lane lines detected in previous 10 frames to reduce jitteriness of lines drawn.
-
-
